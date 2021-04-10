@@ -4,13 +4,12 @@
  *
  * @author Defu Cui
  * @version 1.0
- * @since 2021-4-1
+ * @since 04-09-2021
  */
 package org.eclipse.mosaic.fed.output.generator.carlacosim;
 
 import java.net.*;
 import java.io.*;
-
 
 public class SocketRelay {
 
