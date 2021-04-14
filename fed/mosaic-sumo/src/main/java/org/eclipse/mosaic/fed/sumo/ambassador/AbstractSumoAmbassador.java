@@ -343,6 +343,8 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
     public void connectToFederate(String host, int port) {
         try {
             log.debug("connectToFederate(String host, int port) method");
+            System.out.println("sumo server host "+ host);
+            System.out.println("sumo server port " + port);
             socket = new Socket(host, port);
 
             // set performance preference to lowest latency
@@ -412,8 +414,12 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
         try {
             // whenever initTraci is called the cached paths SHOULD be available
             // just to be sure make a failsafe
+            System.out.println("traci client host"+ socket.getLocalSocketAddress());
+            System.out.println("traci client port" + socket.getPort());
             traci = new TraciClient(sumoConfig, socket);
-
+            final byte[] setOrderBytes = new byte[]{0x00,0x00,0x00,0x0a,0x06,0x03,0x00, 0x00,0x00,0x01};
+            traci.getOut().write(setOrderBytes);
+            System.out.println("set order sentout to sumo");
             if (traci.getCurrentVersion().getApiVersion() < SumoVersion.LOWEST.getApiVersion()) {
                 throw new InternalFederateException(
                         String.format("The installed version of SUMO ( <= %s) is not compatible with Eclipse MOSAIC."
@@ -1386,6 +1392,7 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
                 "-c", sumoConfig.sumoConfigurationFile,
                 "-v",
                 "--remote-port", Integer.toString(port),
+                "--num-clients", "2", //add two clients
                 "--step-length", String.format(Locale.ENGLISH, "%.2f", stepSize)
         );
 

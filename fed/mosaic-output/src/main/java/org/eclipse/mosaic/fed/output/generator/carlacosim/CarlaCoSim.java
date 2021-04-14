@@ -1,4 +1,17 @@
-
+/*
+ * Copyright (c) 2020 Fraunhofer FOKUS and others. All rights reserved.
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contact: mosaic@fokus.fraunhofer.de
+ */
 package org.eclipse.mosaic.fed.output.generator.carlacosim;
 import org.eclipse.mosaic.fed.output.ambassador.AbstractOutputGenerator;
 import org.eclipse.mosaic.fed.output.ambassador.Handle;
@@ -14,16 +27,16 @@ import org.eclipse.mosaic.interactions.traffic.VehicleUpdates;
 
 import java.net.InetSocketAddress;
 
-public class carlacosim extends AbstractOutputGenerator {
+public class CarlaCoSim extends AbstractOutputGenerator {
 
     private final SocketRelay socketRelay;
 
-    public carlacosim(int port) {
-        socketRelay = new SocketRelay(new InetSocketAddress(port));
-        socketRelay.start();
+    public CarlaCoSim(String sumoHostName, int sumoPort, int carlaPort) {
+        socketRelay = new SocketRelay(sumoHostName,sumoPort,carlaPort);
+        socketRelay.run();
     }
 
-    @Handle
+   /*  @Handle
     public void visualizeInteraction(VehicleUpdates interaction) throws Exception {
         socketRelay.updateVehicleUpdates(interaction);
     }
@@ -61,6 +74,6 @@ public class carlacosim extends AbstractOutputGenerator {
     @Handle
     public void visualizeInteraction(ChargingStationUpdates interaction) throws Exception {
         socketRelay.updateChargingStation(interaction);
-    }
+    } */
 
 }
