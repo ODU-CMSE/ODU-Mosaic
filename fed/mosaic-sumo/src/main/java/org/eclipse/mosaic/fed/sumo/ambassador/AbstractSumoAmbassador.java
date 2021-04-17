@@ -417,8 +417,17 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
             System.out.println("traci client host"+ socket.getLocalSocketAddress());
             System.out.println("traci client port" + socket.getPort());
             traci = new TraciClient(sumoConfig, socket);
+            //added by Cui. The following command used to set the client order of the sumo first client(mosaic) as 1
             final byte[] setOrderBytes = new byte[]{0x00,0x00,0x00,0x0a,0x06,0x03,0x00, 0x00,0x00,0x01};
             traci.getOut().write(setOrderBytes);
+            try
+            {
+                Thread.sleep(50000); 
+            }
+            catch (InterruptedException e) {
+                System.out.println("Interrupted "
+                                   + "while Sleeping");
+            }
             System.out.println("set order sentout to sumo");
             if (traci.getCurrentVersion().getApiVersion() < SumoVersion.LOWEST.getApiVersion()) {
                 throw new InternalFederateException(
@@ -428,6 +437,7 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
                                 SumoVersion.LOWEST.getSumoVersion())
                 );
             }
+            System.out.println("get version is send out");
             log.info("Current API version of SUMO is {} (=SUMO {})", traci.getCurrentVersion().getApiVersion(), traci.getCurrentVersion().getSumoVersion());
         } catch (IOException e) {
             log.error("Error while trying to initialize SUMO ambassador.", e);
@@ -437,6 +447,7 @@ public abstract class AbstractSumoAmbassador extends AbstractFederateAmbassador 
         try {
             File sumoWorkingDir = new File(descriptor.getHost().workingDirectory, descriptor.getId());
             trafficSignManager.configure(traci, sumoWorkingDir);
+            System.out.println("traci mangaer works");
         } catch (Exception e) {
             log.error("Could not load TrafficSignManager. No traffic signs will be displayed.");
         }

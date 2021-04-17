@@ -86,13 +86,25 @@ public class SocketRelay implements Runnable {
 	 * After Carla connected, the message begins to transfer between too ends.
 	 */
 	@Override
-	public void run()throws InterruptedException 
+	public void run() 
 	{
         System.out.println("Socket Relay Start");
 		System.out.println("sumo port is " + sumoPort);
 		System.out.println("sumo host is "+ sumoHostName);
 		System.out.println("carla port is " + carlaPort);
-		TimeUnit.SECONDS.sleep(5);
+		//wait for the sumo server starts
+		try
+		{
+			TimeUnit.SECONDS.sleep(30); //Socket relay thread sleeps 30 seconds.
+		}
+		catch (InterruptedException e) {
+            System.out.println("Interrupted "
+                               + "while Sleeping");
+        }
+			//set up the client order as 2
+			//final byte[] setOrderBytes = new byte[]{0x00,0x00,0x00,0x0a,0x06,0x03,0x00, 0x00,0x00,0x02};
+           // toSumoDataOutputStream.write(setOrderBytes);
+	
 		try (Socket sumoSocket = new Socket(sumoHostName, sumoPort)) {
 			// Connect to SUMO first.
 
@@ -100,13 +112,13 @@ public class SocketRelay implements Runnable {
 			DataInputStream fromSumoDataInputStream = new DataInputStream(fromSumoinputStream);
 			OutputStream toSumoOutputStream = sumoSocket.getOutputStream();
 			DataOutputStream toSumoDataOutputStream = new DataOutputStream(toSumoOutputStream);
-            System.out.println("Sumo Server connected");
-			System.out.println("Wait for Carla client connected");
-			final byte[] setOrderBytes = new byte[]{0x00,0x00,0x00,0x0a,0x06,0x03,0x00, 0x00,0x00,0x02};
-            toSumoDataOutputStream.write(setOrderBytes);
+            System.out.println("Sumo Server connected");			
+			//final byte[] setOrderBytes = new byte[]{0x00,0x00,0x00,0x0a,0x06,0x03,0x00, 0x00,0x00,0x02};
+            //toSumoDataOutputStream.write(setOrderBytes);
 			// Listen to CARLA request.
 			try (ServerSocket carlaServerSocket = new ServerSocket(carlaPort)) {
 				// Blocking call until CARLA is connected.
+				System.out.println("Wait for Carla client connected");
 				Socket carlaSocket = carlaServerSocket.accept();
                 System.out.println("Carla connected");
 				try {

@@ -297,7 +297,7 @@ public class LocalFederationManagement implements FederationManagement {
         final File execDir = new File(handle.getHost().workingDirectory, handle.getId());
 
         this.copyFromFederateLogDir(handle, execDir);
-        this.removeDirectory(execDir);
+       // this.removeDirectory(execDir);
     }
 
     /**

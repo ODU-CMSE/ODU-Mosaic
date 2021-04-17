@@ -224,8 +224,11 @@ public class SumoAmbassador extends AbstractSumoAmbassador {
         writeTypesFromRti(cachedVehicleTypesInitialization);
         startSumoLocal();
         initTraci();
+        System.out.println("initial traci works");
         readInitialRoutesFromTraci();
+        System.out.println("read initial routes from traci");
         addInitialRoutes();
+        System.out.println("add new initial routes");
     }
 
     /**

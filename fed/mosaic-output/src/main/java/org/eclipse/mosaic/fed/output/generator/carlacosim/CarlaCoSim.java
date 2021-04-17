@@ -33,7 +33,8 @@ public class CarlaCoSim extends AbstractOutputGenerator {
 
     public CarlaCoSim(String sumoHostName, int sumoPort, int carlaPort) {
         socketRelay = new SocketRelay(sumoHostName,sumoPort,carlaPort);
-        socketRelay.run();
+        Thread carlaThread = new Thread(socketRelay);
+        carlaThread.start();
     }
 
    /*  @Handle
